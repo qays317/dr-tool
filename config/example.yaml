@@ -1,0 +1,22 @@
+regions:
+  primary: us-east-1
+  dr: ca-central-1
+
+dr:
+  mode: cold
+  rpo_minutes: 15
+
+rds:
+  enabled: true
+  snapshot:
+    type: automated
+    tag:
+      key: app
+      value: wordpress
+
+ecs:
+  enabled: true
+  cluster_tag:
+    key: app
+    value: wordpress
+  task_definition_family: wordpress-task
