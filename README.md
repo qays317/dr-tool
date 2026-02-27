@@ -1,5 +1,6 @@
 # dr-tool
 
+```text
 dr-checker/
 ├── dr_checker/
 │   ├── __init__.py
@@ -45,6 +46,6 @@ dr-checker/
 ├── README.md
 └── pyproject.toml
 
-
+```
 
 
