@@ -48,4 +48,23 @@ dr-checker/
 
 ```
 
+Every Check must adhere to this contract
+
+Inside every check file:
+
+```text
+class SomethingCheck(BaseCheck):
+    name = "Human readable name"
+    severity = "CRITICAL | MEDIUM | LOW"
+
+    def run(self, context) -> CheckResult:
+        ...
+
+```
+
+
+
+
+
+
 
