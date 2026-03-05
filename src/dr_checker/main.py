@@ -23,6 +23,8 @@ def main():
     parser = argparse.ArgumentParser(prog="dr-checker")
     parser.add_argument("--config", required=True, help="Path to config.yaml")
     parser.add_argument("--runtime-dir", default=None, help="Optional runtime directory")
+    parser.add_argument("--primary-image-uri", default=None)
+    parser.add_argument("--dr-image-uri", default=None)
     args = parser.parse_args()
 
     try:
