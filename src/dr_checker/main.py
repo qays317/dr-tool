@@ -15,6 +15,14 @@ from dr_checker.checks.cloudfront.cloudfront_failover import CloudFrontFailoverC
 SEVERITY_ORDER = {"LOW": 1, "MEDIUM": 2, "CRITICAL": 3}
 
 
+def exit_code(results):
+    if any(r.status == "ERROR" for r in results):
+        return 3
+    if any(r.status == "FAIL" for r in results):
+        return 2
+    return 0
+
+
 def main():
     parser = argparse.ArgumentParser(prog="dr-checker")
     parser.add_argument("--config", required=True, help="Path to config.yaml")
@@ -41,45 +49,9 @@ def main():
 
     runner = Runner(context, checks=checks)
 
-    try:
-        results = runner.run_all()
-    except Exception as e:
-        # خطأ عام غير متوقع
-        if args.format == "json":
-            print(json.dumps({"error": str(e)}, indent=2))
-        else:
-            print(f"ERROR: {e}")
-        return 3
-
-    # تحديد هل يوجد FAIL نعتبره قاتل بناءً على fail-on
-    fail_threshold = SEVERITY_ORDER[args.fail_on]
-
-    fatal_fails = [
-        r for r in results
-        if r.status == "FAIL" and SEVERITY_ORDER.get(r.severity, 0) >= fail_threshold
-    ]
-
-    exit_code = 2 if fatal_fails else 0
-
-    if args.format == "json":
-        payload = {
-            "summary": {
-                "total": len(results),
-                "pass": sum(1 for r in results if r.status == "PASS"),
-                "fail": sum(1 for r in results if r.status == "FAIL"),
-                "skip": sum(1 for r in results if r.status == "SKIP"),
-                "warn": sum(1 for r in results if r.status == "WARN"),
-                "fail_on": args.fail_on,
-                "exit_code": exit_code,
-            },
-            "checks": [r.to_dict() for r in results],
-        }
-        print(json.dumps(payload, indent=2))
-    else:
-        runner.print_report(results)
-        print(f"\nExit code: {exit_code} (fail-on={args.fail_on})")
-
-    return exit_code
+    results = runner.run_all()
+    runner.print_report(results)
+    sys.exit(exit_code(results))
 
 
 if __name__ == "__main__":
