@@ -48,9 +48,9 @@ class EcsReadinessCheck(BaseCheck):
             return CheckResult(
                 self.name,
                 "FAIL",
-                "Missing image URIs: provide --runtime-dir OR set ecs.images.primary_uri / ecs.images.dr_uri in config.yaml"
+                "Missing image URIs: pass --primary-image-uri/--dr-image-uri or set env vars or config ecs.images.*"
             )
-
+    
         # 3) Validate images exist in ECR
         ok1, msg1 = self._image_exists(context, primary_uri, context.config.primary_region)
         ok2, msg2 = self._image_exists(context, dr_uri, context.config.dr_region)
