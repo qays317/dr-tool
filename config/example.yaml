@@ -20,3 +20,7 @@ ecs:
     key: app
     value: wordpress
   task_definition_family: wordpress-task
+
+images:
+  primary_ecr_image_uri: ""
+  dr_ecr_image_uri: ""
