@@ -1,9 +1,11 @@
+# dr_checker/main.py
 import sys
 import argparse
 
 from dr_checker.config import Config, ConfigError
 from dr_checker.context import Context
 from dr_checker.runner import Runner
+
 from dr_checker.checks.global.aws_identity import AwsIdentityCheck
 from dr_checker.checks.rds.rds_snapshot_readiness import RdsSnapshotReadinessCheck
 from dr_checker.checks.ecs.ecs_readiness import EcsReadinessCheck
@@ -22,9 +24,11 @@ def exit_code(results):
 def main():
     parser = argparse.ArgumentParser(prog="dr-checker")
     parser.add_argument("--config", required=True, help="Path to config.yaml")
-    parser.add_argument("--runtime-dir", default=None, help="Optional runtime directory")
-    parser.add_argument("--primary-image-uri", default=None)
-    parser.add_argument("--dr-image-uri", default=None)
+
+    # Option (3): pass image URIs directly (CI/CD friendly)
+    parser.add_argument("--primary-image-uri", default=None, help="Primary ECR image URI (overrides env/config)")
+    parser.add_argument("--dr-image-uri", default=None, help="DR ECR image URI (overrides env/config)")
+
     args = parser.parse_args()
 
     try:
@@ -51,6 +55,7 @@ def main():
 
     results = runner.run_all()
     runner.print_report(results)
+
     return exit_code(results)
 
 
