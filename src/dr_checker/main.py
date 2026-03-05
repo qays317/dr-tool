@@ -33,7 +33,11 @@ def main():
         print(f"Config error: {e}")
         return 1
 
-    context = Context(config, runtime_dir=args.runtime_dir)
+    context = Context(
+        config,
+        primary_image_uri=args.primary_image_uri,
+        dr_image_uri=args.dr_image_uri,
+    )
 
     checks = [
         AwsIdentityCheck(),
