@@ -48,6 +48,3 @@ def main():
     runner.print_report(results)
     sys.exit(exit_code(results))
 
-
-if __name__ == "__main__":
-    sys.exit(main())
