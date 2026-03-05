@@ -1,5 +1,4 @@
 import sys
-import json
 import argparse
 
 from dr_checker.config import Config, ConfigError
@@ -11,8 +10,6 @@ from dr_checker.checks.ecs.ecs_readiness import EcsReadinessCheck
 from dr_checker.checks.storage.s3_readiness import S3StorageReadinessCheck
 from dr_checker.checks.cloudfront.cloudfront_failover import CloudFrontFailoverCheck
 
-
-SEVERITY_ORDER = {"LOW": 1, "MEDIUM": 2, "CRITICAL": 3}
 
 
 def exit_code(results):
@@ -27,8 +24,6 @@ def main():
     parser = argparse.ArgumentParser(prog="dr-checker")
     parser.add_argument("--config", required=True, help="Path to config.yaml")
     parser.add_argument("--runtime-dir", default=None, help="Optional runtime directory")
-    parser.add_argument("--format", choices=["text", "json"], default="text")
-    parser.add_argument("--fail-on", choices=["LOW", "MEDIUM", "CRITICAL"], default="CRITICAL")
     args = parser.parse_args()
 
     try:
