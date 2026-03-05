@@ -33,16 +33,16 @@ class EcsReadinessCheck(BaseCheck):
             )
 
         # -------------------------
-        # 2) Read runtime images
+        # 2) Read images
         # -------------------------
-        primary_uri = context.runtime.primary_ecr_image_uri
-        dr_uri = context.runtime.dr_ecr_image_uri
-
+        primary_uri = context.get_primary_image_uri()
+        dr_uri = context.get_dr_image_uri()
+        
         if not primary_uri or not dr_uri:
             return CheckResult(
                 self.name,
                 "FAIL",
-                "Missing runtime image URIs"
+                "Missing image URIs: provide --runtime-dir OR set primary_ecr_image_uri/dr_ecr_image_uri in config.yaml"
             )
 
         # -------------------------
