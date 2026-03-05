@@ -11,7 +11,6 @@ from dr_checker.checks.storage.s3_readiness import S3StorageReadinessCheck
 from dr_checker.checks.cloudfront.cloudfront_failover import CloudFrontFailoverCheck
 
 
-
 def exit_code(results):
     if any(r.status == "ERROR" for r in results):
         return 3
@@ -46,5 +45,8 @@ def main():
 
     results = runner.run_all()
     runner.print_report(results)
-    sys.exit(exit_code(results))
+    return exit_code(results)
 
+
+if __name__ == "__main__":
+    sys.exit(main())
